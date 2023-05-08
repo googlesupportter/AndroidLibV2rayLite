@@ -14,18 +14,16 @@ fetchDep:
 	git clone https://github.com/v2fly/v2ray-core.git $(shell go env GOPATH)/src/v2ray.com/core
 	go get -d github.com/2dust/AndroidLibV2rayLite
 
-ANDROID_HOME=$(HOME)/android-sdk-linux
+ANDROID_HOME=/Users/sanbo/tools/sdk
 export ANDROID_HOME
+ANDROID_NDK_HOME=/Users/sanbo/tools/sdk/ndk/19.2.5345600
 PATH:=$(PATH):$(GOPATH)/bin
 export PATH
-downloadGoMobile:
-	cd ~ ;curl -L https://raw.githubusercontent.com/2dust/AndroidLibV2rayLite/master/ubuntu-cli-install-android-sdk.sh | sudo bash -
-	ls ~
-	ls ~/android-sdk-linux/
 
 BuildMobile:
 	gomobile init
-	gomobile bind -v -ldflags='-s -w' github.com/2dust/AndroidLibV2rayLite
+	#go mod tidy -v
+	gomobile bind -v -androidapi 19 -ldflags='-s -w' ./
 
 all: asset pb fetchDep
 	@echo DONE
